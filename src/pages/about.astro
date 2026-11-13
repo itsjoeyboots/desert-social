@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import Invitation from '../components/Invitation.astro';
+
+const chapters = [
+  {
+    label: 'The problem',
+    title: 'Full feeds, empty calendars.',
+    body: [
+      'It has never been easier to stay in touch and never harder to actually meet anyone. We follow hundreds of people and sit down with very few of them.',
+      'Most events don’t help. You stand in a crowd, trade a few names and go home. That’s attendance, not community.',
+    ],
+  },
+  {
+    label: 'What we do about it',
+    title: 'People in a room, on purpose.',
+    body: [
+      'Desert Social gathers people in person and takes the hosting seriously. Groups are small enough to speak with everyone. Settings are chosen to give you something to talk about. Nobody has to work the room, because the room has been thought through.',
+      'What comes out of that is what you’d expect: friendships, introductions, the odd business deal, and a standing reason to leave the house.',
+    ],
+  },
+  {
+    label: 'Where cars fit',
+    title: 'The icebreaker, not the point.',
+    body: [
+      'This grew out of car culture, and it shows. A good drive or a lot full of interesting builds is one of the easiest ways for strangers to start talking.',
+      'But the car is where the conversation starts, not where it ends. You don’t need one to belong here.',
+    ],
+  },
+  {
+    label: 'Where this goes',
+    title: 'One good night at a time.',
+    body: [
+      'More kinds of gatherings. Partnerships with venues and businesses we respect. In time, a place of our own.',
+      'We’re building toward all of it, and we’d rather do it properly than quickly.',
+    ],
+  },
+];
+
+const values = [
+  { title: 'Show up.', text: 'A community is the people who come. Be one of them.' },
+  { title: 'Be generous.', text: 'With introductions, with attention, with what you know.' },
+  { title: 'Leave the ego outside.', text: 'What you’ve built is interesting. How you carry it matters more.' },
+  { title: 'No selling from the stage.', text: 'If the work is good, people will ask.' },
+];
+---
+
+<Base
+  title="About"
+  description="Why Desert Social exists: real-world connection for people who would rather meet in person. What we believe and how we host."
+>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label" data-reveal><span class="num">About</span>Why we exist</p>
+      <h1 class="display" data-reveal style="--d:.06s">
+        The best things in most lives started <em>in a room</em> with the right people.
+      </h1>
+      <p class="lede" data-reveal style="--d:.12s">
+        A job. A business partner. A friend who became family. None of it began with a follow request.
+        Desert Social exists to make more of those rooms.
+      </p>
+    </div>
+  </header>
+
+  {
+    chapters.map((c, i) => (
+      <section class:list={['section', { 'tone-bone': i === 1 }]}>
+        <div class="wrap grid">
+          <p class="label col-label" data-reveal>
+            <span class="num">{String(i + 1).padStart(2, '0')}</span>
+            {c.label}
+          </p>
+          <div class="col-main">
+            <h2 class="title chapter__title" data-reveal>
+              {c.title}
+            </h2>
+            <div class="prose" data-reveal style="--d:.08s">
+              {c.body.map((p) => (
+                <p>{p}</p>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+    ))
+  }
+
+  <section class="section">
+    <div class="wrap grid">
+      <p class="label col-label" data-reveal><span class="num">05</span>House rules</p>
+      <div class="col-main">
+        <h2 class="title chapter__title" data-reveal>Four things we ask of everyone.</h2>
+        <ol class="rows" data-reveal>
+          {
+            values.map((v, i) => (
+              <li class="row">
+                <span class="row__num">{String(i + 1).padStart(2, '0')}</span>
+                <h3 class="row__title">{v.title}</h3>
+                <p class="row__text">{v.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <Invitation />
+</Base>
+
+<style>
+  .page-head .display {
+    max-width: 18ch;
+  }
+  .chapter__title {
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+  }
+  .rows {
+    margin-top: 0.5rem;
+  }
+</style>

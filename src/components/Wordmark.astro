@@ -1,0 +1,44 @@
+---
+// The Desert Social wordmark: wide capitals split by a horizon rule.
+interface Props {
+  size?: 'sm' | 'lg';
+}
+const { size = 'sm' } = Astro.props;
+---
+
+<span class:list={['wordmark', `wordmark--${size}`]}>
+  <span>Desert</span><span class="wordmark__rule" aria-hidden="true"></span><span class="visually-hidden">&nbsp;</span><span>Social</span>
+</span>
+
+<style>
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7em;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-stretch: 125%;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    line-height: 1;
+  }
+  .wordmark--sm {
+    font-size: 0.74rem;
+  }
+  .wordmark--lg {
+    font-size: clamp(1.1rem, 6vw, 5.5rem);
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    gap: 0.45em;
+  }
+  .wordmark__rule {
+    display: block;
+    width: 1.6em;
+    height: 1px;
+    background: var(--accent);
+  }
+  .wordmark--lg .wordmark__rule {
+    width: 0.9em;
+  }
+</style>

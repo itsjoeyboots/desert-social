@@ -1,0 +1,74 @@
+---
+// One labelled form control with its hint and error slot.
+interface Props {
+  name: string;
+  label: string;
+  type?: 'text' | 'email' | 'tel' | 'url' | 'textarea' | 'select';
+  required?: boolean;
+  autocomplete?: string;
+  inputmode?: 'text' | 'email' | 'tel' | 'url';
+  maxlength?: number;
+  rows?: number;
+  hint?: string;
+  options?: string[];
+  half?: boolean;
+}
+
+const {
+  name,
+  label,
+  type = 'text',
+  required = false,
+  autocomplete,
+  inputmode,
+  maxlength = 200,
+  rows = 5,
+  hint,
+  options = [],
+  half = false,
+} = Astro.props;
+
+const id = `f-${name}`;
+const describedBy = [hint ? `${id}-hint` : null, `${id}-error`].filter(Boolean).join(' ');
+---
+
+<div class:list={['field', { 'field--half': half }]} data-field>
+  <label class="field__label" for={id}>
+    {label}
+    {!required && <span class="field__optional">Optional</span>}
+  </label>
+
+  {
+    type === 'textarea' ? (
+      <textarea
+        id={id}
+        name={name}
+        rows={rows}
+        maxlength={maxlength}
+        required={required}
+        aria-describedby={describedBy}
+      />
+    ) : type === 'select' ? (
+      <select id={id} name={name} required={required} aria-describedby={describedBy}>
+        <option value="">Choose one</option>
+        {options.map((o) => (
+          <option value={o}>{o}</option>
+        ))}
+      </select>
+    ) : (
+      <input
+        id={id}
+        name={name}
+        type={type}
+        maxlength={maxlength}
+        required={required}
+        autocomplete={autocomplete}
+        inputmode={inputmode}
+        aria-describedby={describedBy}
+      />
+    )
+  }
+
+  {hint && <p class="field__hint" id={`${id}-hint`}>{hint}</p>}
+  <p class="field__error" id={`${id}-error`} data-error hidden></p>
+</div>

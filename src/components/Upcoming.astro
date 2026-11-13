@@ -1,0 +1,47 @@
+---
+// Upcoming gatherings from src/data/events.ts, or an honest empty state.
+import { upcoming } from '../data/events';
+import { href } from '../data/site';
+
+const list = upcoming();
+const fmt = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', timeZone: 'UTC' });
+---
+
+{
+  list.length > 0 ? (
+    <ol class="rows">
+      {list.map((e) => (
+        <li class="row">
+          <span class="row__num">
+            <time datetime={e.date}>{fmt.format(new Date(`${e.date}T12:00:00Z`))}</time>
+          </span>
+          <h3 class="row__title">{e.title}</h3>
+          <p class="row__text">{[e.kind, e.time, e.place, e.note].filter(Boolean).join(' · ')}</p>
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <div class="upcoming-empty">
+      <p class="title">Nothing public yet.</p>
+      <p class="prose">
+        We’re new, and we’d rather announce a night we’re proud of than fill a calendar. The first dates
+        go to Founders before they go anywhere else.
+      </p>
+      <a class="arrow-link" href={href('/membership/')}>Become a Founder</a>
+    </div>
+  )
+}
+
+<style>
+  .upcoming-empty {
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border: 1px solid var(--rule);
+    background: var(--bg-raised);
+  }
+  .upcoming-empty .prose {
+    margin-block: 1rem 1.75rem;
+  }
+  .row__num time {
+    white-space: nowrap;
+  }
+</style>

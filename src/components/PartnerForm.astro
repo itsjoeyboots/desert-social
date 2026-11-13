@@ -1,0 +1,27 @@
+---
+import Form from './Form.astro';
+import Field from './Field.astro';
+import { partnerTypes } from '../data/forms';
+---
+
+<Form
+  kind="partner"
+  submitLabel="Send inquiry"
+  doneTitle="Thanks. We’ve got it."
+  doneText="We’ll read what you sent and come back to you by email. If it’s a fit, the next step is a conversation."
+>
+  <Field name="full_name" label="Your name" required autocomplete="name" half />
+  <Field name="business" label="Business or brand" required autocomplete="organization" half />
+  <Field name="email" label="Email" type="email" required autocomplete="email" inputmode="email" half />
+  <Field name="phone" label="Phone" type="tel" autocomplete="tel" inputmode="tel" maxlength={30} half />
+  <Field name="partner_type" label="What best describes you?" type="select" options={partnerTypes} required half />
+  <Field name="link" label="Website or Instagram" maxlength={200} half />
+  <Field
+    name="message"
+    label="What do you have in mind?"
+    type="textarea"
+    required
+    maxlength={2000}
+    hint="What you do, and what you’d like to do together."
+  />
+</Form>

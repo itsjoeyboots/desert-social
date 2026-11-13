@@ -1,0 +1,257 @@
+---
+// Shared shell for the three forms: honeypot, status line, submit button and
+// the confirmation that replaces the form once the server has accepted it.
+import { site, href } from '../data/site';
+
+interface Props {
+  kind: 'membership' | 'partner' | 'contact';
+  submitLabel: string;
+  doneTitle: string;
+  doneText: string;
+}
+
+const { kind, submitLabel, doneTitle, doneText } = Astro.props;
+
+---
+
+<div class="form-shell" data-form-shell>
+  <form
+    class="form"
+    method="post"
+    novalidate
+    data-form={kind}
+    data-endpoint={site.forms.endpoint}
+    data-key={site.forms.publishableKey}
+    data-email={site.email}
+  >
+    <div class="form__fields">
+      <slot />
+    </div>
+
+    <div class="form__trap" aria-hidden="true">
+      <label for={`${kind}-nickname`}>Leave this field empty</label>
+      <input id={`${kind}-nickname`} type="text" name="nickname" tabindex="-1" autocomplete="off" />
+    </div>
+
+    <p class="form__status" role="alert" data-status hidden></p>
+
+    <div class="form__actions">
+      <button class="btn" type="submit" data-submit data-label={submitLabel}>{submitLabel}</button>
+      <p class="small">
+        We use what you send only to reply to you. See our <a href={href('/privacy/')}>privacy note</a>.
+      </p>
+    </div>
+  </form>
+
+  <div class="form-done" data-done hidden tabindex="-1">
+    <p class="label"><span class="num">✓</span>Received</p>
+    <h3 class="title">{doneTitle}</h3>
+    <p class="lede">{doneText}</p>
+  </div>
+</div>
+
+<script>
+  import '../scripts/forms.ts';
+</script>
+
+<style is:global>
+  .form__fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: clamp(1.25rem, 3vw, 2.5rem);
+    row-gap: 2rem;
+  }
+  .field,
+  .choice-group {
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  @media (min-width: 40rem) {
+    .field--half {
+      grid-column: span 1;
+    }
+  }
+  .field__label,
+  .choice-group legend {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    width: 100%;
+    margin-bottom: 0.5rem;
+    padding: 0;
+    font-size: var(--t-label);
+    font-weight: 500;
+    font-stretch: 112%;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-soft);
+  }
+  .field__optional {
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--fg-faint);
+  }
+  .field input,
+  .field select,
+  .field textarea {
+    display: block;
+    width: 100%;
+    min-height: 3.25rem;
+    padding: 0.8rem 0.9rem;
+    background: var(--field);
+    border: 0;
+    border-bottom: 1px solid var(--rule-strong);
+    border-radius: 0;
+    font-family: var(--sans);
+    font-size: 1.0625rem;
+    line-height: 1.4;
+    color: var(--fg);
+    transition:
+      border-color 0.2s var(--ease),
+      background-color 0.2s var(--ease);
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  .field textarea {
+    resize: vertical;
+    min-height: 8.5rem;
+  }
+  .field select {
+    padding-right: 2.5rem;
+    background-image:
+      linear-gradient(45deg, transparent 50%, currentColor 50%),
+      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position:
+      calc(100% - 1.25rem) 52%,
+      calc(100% - 0.9rem) 52%;
+    background-size:
+      0.36rem 0.36rem,
+      0.36rem 0.36rem;
+    background-repeat: no-repeat;
+  }
+  .field select option {
+    background: var(--char);
+    color: var(--bone);
+  }
+  .field input:hover,
+  .field select:hover,
+  .field textarea:hover {
+    border-bottom-color: var(--fg);
+  }
+  .field input:focus-visible,
+  .field select:focus-visible,
+  .field textarea:focus-visible {
+    outline: none;
+    border-bottom-color: var(--accent);
+    box-shadow: 0 1px 0 0 var(--accent);
+    background-color: color-mix(in srgb, var(--fg) 7%, transparent);
+  }
+  .field [aria-invalid='true'] {
+    border-bottom-color: var(--danger);
+    box-shadow: 0 1px 0 0 var(--danger);
+  }
+  .field__hint {
+    margin-top: 0.5rem;
+    font-size: var(--t-small);
+    color: var(--fg-faint);
+  }
+  .field__error {
+    margin-top: 0.5rem;
+    font-size: var(--t-small);
+    color: var(--danger);
+  }
+  .tone-bone .field__error,
+  .tone-bone .form__status.is-error {
+    color: #a3371f;
+  }
+
+  .choice-group {
+    border: 0;
+    margin: 0;
+    padding: 0;
+  }
+  .choices {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .choice {
+    position: relative;
+  }
+  .choice input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .choice span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.55rem 1.05rem;
+    border: 1px solid var(--rule-strong);
+    font-size: 0.95rem;
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease);
+  }
+  .choice input:hover + span {
+    border-color: var(--fg);
+  }
+  .choice input:checked + span {
+    background: var(--fg);
+    border-color: var(--fg);
+    color: var(--bg);
+  }
+  .choice input:focus-visible + span {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  .form__trap {
+    position: absolute;
+    left: -200vw;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .form__status {
+    margin-top: 2rem;
+    padding: 1rem 1.1rem;
+    border-left: 2px solid var(--danger);
+    background: var(--field);
+    color: var(--fg);
+  }
+  .form__status a {
+    color: inherit;
+  }
+  .form__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin-top: 2.5rem;
+  }
+  .form__actions .small {
+    max-width: 22rem;
+  }
+  .form-done {
+    padding: clamp(2rem, 5vw, 3.5rem);
+    border: 1px solid var(--rule-strong);
+  }
+  .form-done:focus {
+    outline: none;
+  }
+  .form-done .label {
+    margin-bottom: 1.5rem;
+  }
+  .form-done .lede {
+    margin-top: 1.25rem;
+    color: var(--fg-soft);
+  }
+</style>

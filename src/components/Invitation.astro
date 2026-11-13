@@ -1,0 +1,33 @@
+---
+// The closing invitation used at the foot of most pages.
+import { founders, usd } from '../data/membership';
+import { href } from '../data/site';
+---
+
+<section class="section tone-bone invitation">
+  <div class="wrap grid">
+    <p class="label col-label" data-reveal><span class="num">→</span>An invitation</p>
+    <div class="col-main">
+      <h2 class="display" data-reveal>
+        {founders.capWords} Founders.<br /><em>Then the door closes.</em>
+      </h2>
+      <p class="lede" data-reveal style="--d:.08s">
+        The {founders.name} membership is the only way in right now. {usd(founders.initiation)} to join,
+        {usd(founders.monthly)} a month, and a place at everything we do from the first night on.
+      </p>
+      <div class="btn-row" data-reveal style="--d:.14s">
+        <a class="btn" href={href('/membership/#apply')}>Apply for Founders</a>
+        <a class="btn btn--ghost" href={href('/membership/')}>How membership works</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .invitation .lede {
+    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  }
+  .invitation .btn-row {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+</style>

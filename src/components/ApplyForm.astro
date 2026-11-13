@@ -1,0 +1,47 @@
+---
+import Form from './Form.astro';
+import Field from './Field.astro';
+import { interests } from '../data/forms';
+---
+
+<Form
+  kind="membership"
+  submitLabel="Send application"
+  doneTitle="Your application is in."
+  doneText="We read every one ourselves. If it looks like a fit, we’ll be in touch using the details you gave us. Nothing is charged until you’ve been accepted and decided to join."
+>
+  <Field name="full_name" label="Full name" required autocomplete="name" half />
+  <Field name="email" label="Email" type="email" required autocomplete="email" inputmode="email" half />
+  <Field name="phone" label="Phone" type="tel" required autocomplete="tel" inputmode="tel" maxlength={30} half />
+  <Field name="profession" label="Business or profession" required autocomplete="organization-title" half />
+  <Field
+    name="instagram"
+    label="Instagram or other social"
+    maxlength={120}
+    hint="A handle or a link. It helps us put a face to the name."
+  />
+
+  <fieldset class="choice-group" data-required-group>
+    <legend>What are you most interested in?</legend>
+    <div class="choices">
+      {
+        interests.map((item) => (
+          <label class="choice">
+            <input type="checkbox" name="interests" value={item} />
+            <span>{item}</span>
+          </label>
+        ))
+      }
+    </div>
+    <p class="field__error" data-error hidden></p>
+  </fieldset>
+
+  <Field
+    name="reason"
+    label="Why Desert Social?"
+    type="textarea"
+    required
+    maxlength={2000}
+    hint="A few honest sentences beat a polished paragraph."
+  />
+</Form>

@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import { site } from '../data/site';
+---
+
+<Base title="Privacy" description="What Desert Social collects through this website, why, and how to have it removed.">
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label"><span class="num">Privacy</span>Last updated November 2026</p>
+      <h1 class="display">The short version: we don’t sell your details.</h1>
+    </div>
+  </header>
+
+  <section class="section section--top">
+    <div class="wrap grid">
+      <div class="col-main prose">
+        <h2 class="title">What we collect</h2>
+        <p>
+          Only what you type into a form on this site: your name, email address, phone number, business or
+          profession, social handle, the interests you choose and anything you write in a message. We also
+          keep a scrambled, one-way record of the network address a form was sent from. It can’t be turned
+          back into your address; it’s there to stop spam.
+        </p>
+
+        <h2 class="title">Why we collect it</h2>
+        <p>
+          To read your application, inquiry or message and reply to you. If you become a member, we’ll use
+          the same details to tell you about gatherings.
+        </p>
+
+        <h2 class="title">Where it’s kept</h2>
+        <p>
+          In a private database hosted by Supabase, a US-based service. It isn’t public and only the people
+          who run {site.name} can read it.
+        </p>
+
+        <h2 class="title">What we don’t do</h2>
+        <p>
+          We don’t sell, rent or trade your information. This site has no advertising trackers and no
+          analytics cookies.
+        </p>
+
+        <h2 class="title">Seeing or removing your details</h2>
+        <p>
+          Email <a href={`mailto:${site.email}`}>{site.email}</a> and ask. We’ll tell you what we hold or
+          delete it.
+        </p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section--top {
+    padding-top: 0;
+  }
+  .page-head .display {
+    max-width: 20ch;
+  }
+  .prose .title {
+    color: var(--fg);
+    margin-top: 2.5em;
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.9rem);
+  }
+  .prose .title:first-child {
+    margin-top: 0;
+  }
+</style>

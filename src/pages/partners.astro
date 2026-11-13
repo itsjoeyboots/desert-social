@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro';
+import PartnerForm from '../components/PartnerForm.astro';
+
+const who = [
+  { title: 'Venues', text: 'Spaces with character that suit a well-hosted evening.' },
+  { title: 'Automotive businesses', text: 'Shops, dealers and specialists who do careful work.' },
+  { title: 'Local businesses and brands', text: 'People making or selling something our members would be glad to find.' },
+  { title: 'Sponsors', text: 'Companies that want to support a night and be part of it, not just be printed on it.' },
+  { title: 'Individuals', text: 'Hosts, chefs, photographers and anyone with an idea worth trying.' },
+];
+
+const how = [
+  { title: 'Fit first.', text: 'We only put something in front of members that we’d recommend to a friend.' },
+  { title: 'Built together.', text: 'No rate card and no packages yet. Every collaboration starts from what would make a good night.' },
+  { title: 'Straight answers.', text: 'If it isn’t right for our members, we’ll say so, and say why.' },
+];
+---
+
+<Base
+  title="Partners"
+  description="Work with Desert Social. We collaborate with venues, automotive businesses, local brands and sponsors in Greater Phoenix. Send a partnership inquiry."
+>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label" data-reveal><span class="num">Partners</span>Work with us</p>
+      <h1 class="display" data-reveal style="--d:.06s">Built with people who <em>do things well.</em></h1>
+      <p class="lede" data-reveal style="--d:.12s">
+        We work with businesses, venues and brands our members would want to know about anyway. If that
+        sounds like you, we should talk.
+      </p>
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="wrap grid">
+      <p class="label col-label" data-reveal><span class="num">01</span>Who we work with</p>
+      <div class="col-main">
+        <ol class="rows" data-reveal>
+          {
+            who.map((w, i) => (
+              <li class="row">
+                <span class="row__num">{String(i + 1).padStart(2, '0')}</span>
+                <h2 class="row__title">{w.title}</h2>
+                <p class="row__text">{w.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section tone-bone">
+    <div class="wrap grid">
+      <p class="label col-label" data-reveal><span class="num">02</span>How we work</p>
+      <div class="col-main">
+        <ul class="trio">
+          {
+            how.map((h, i) => (
+              <li data-reveal style={`--d:${i * 0.08}s`}>
+                <h2 class="title">{h.title}</h2>
+                <p>{h.text}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--flush" id="inquire">
+    <div class="wrap grid">
+      <div class="col-label" data-reveal>
+        <p class="label"><span class="num">03</span>Inquire</p>
+        <p class="small aside">It starts with a conversation. Tell us what you do and what you have in mind.</p>
+      </div>
+      <div class="col-main" data-reveal>
+        <h2 class="display form-title">Start the conversation.</h2>
+        <PartnerForm />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .trio {
+    display: grid;
+    gap: clamp(2rem, 4vw, 3rem);
+  }
+  @media (min-width: 52rem) {
+    .trio {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  .trio li {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule-strong);
+  }
+  .trio p {
+    margin-top: 0.9rem;
+    color: var(--fg-soft);
+    max-width: 24rem;
+  }
+  #inquire {
+    scroll-margin-top: 4rem;
+  }
+  .aside {
+    margin-top: 1.25rem;
+    max-width: 16rem;
+  }
+  .form-title {
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+</style>

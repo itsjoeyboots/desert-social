@@ -1,0 +1,82 @@
+---
+import Base from '../layouts/Base.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site, href } from '../data/site';
+---
+
+<Base
+  title="Contact"
+  description="Get in touch with Desert Social in Greater Phoenix, Arizona. Send a message, email us, or find us on Instagram."
+>
+  <header class="page-head">
+    <div class="wrap">
+      <p class="label" data-reveal><span class="num">Contact</span>Say hello</p>
+      <h1 class="display" data-reveal style="--d:.06s">A real person <em>reads these.</em></h1>
+      <p class="lede" data-reveal style="--d:.12s">
+        Questions, ideas, press. Write to us and we’ll write back.
+      </p>
+    </div>
+  </header>
+
+  <section class="section section--top">
+    <div class="wrap grid">
+      <div class="col-label details" data-reveal>
+        <div>
+          <p class="label">Email</p>
+          <p><a href={`mailto:${site.email}`}>{site.email}</a></p>
+        </div>
+        {
+          site.social.map((s) => (
+            <div>
+              <p class="label">{s.label}</p>
+              <p>
+                <a href={s.url} target="_blank" rel="noopener noreferrer">
+                  {s.handle}
+                  <span class="visually-hidden">(opens in a new tab)</span>
+                </a>
+              </p>
+            </div>
+          ))
+        }
+        <div>
+          <p class="label">Where</p>
+          <p>{site.location}</p>
+        </div>
+        <div>
+          <p class="label">Looking for something else?</p>
+          <p><a href={href('/membership/#apply')}>Apply for membership</a></p>
+          <p><a href={href('/partners/#inquire')}>Partner with us</a></p>
+        </div>
+      </div>
+      <div class="col-main" data-reveal style="--d:.08s">
+        <h2 class="visually-hidden">Send a message</h2>
+        <ContactForm />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .section--top {
+    padding-top: 0;
+  }
+  .details {
+    display: grid;
+    gap: 2rem;
+    align-content: start;
+  }
+  .details .label {
+    margin-bottom: 0.5rem;
+    color: var(--fg-faint);
+  }
+  .details a {
+    display: inline-block;
+    padding-block: 0.2rem;
+    text-decoration-color: var(--rule-strong);
+    transition: text-decoration-color 0.2s var(--ease);
+    overflow-wrap: anywhere;
+  }
+  .details a:hover {
+    text-decoration-color: var(--accent);
+  }
+</style>
