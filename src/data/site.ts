@@ -6,8 +6,8 @@ export const site = {
   url: 'https://desertsocialaz.com',
   tagline: 'Good company is built in person.',
   description:
-    'Desert Social is a community in Greater Phoenix for people who build things and would rather meet in person. Gatherings, drives, dinners and good introductions.',
-  location: 'Greater Phoenix, Arizona',
+    'Desert Social is a community in Gilbert and the East Valley for people who build things and would rather meet in person. Gatherings, drives, dinners and good introductions.',
+  location: 'Gilbert · East Valley, Arizona',
   email: 'info@desertsocialaz.com',
   // Remove an entry and it disappears from the site.
   social: [

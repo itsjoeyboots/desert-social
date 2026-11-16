@@ -1,24 +1,49 @@
 ---
 import Base from '../layouts/Base.astro';
 import ApplyForm from '../components/ApplyForm.astro';
-import { tiers, usd } from '../data/membership';
+import { tiers, founders, usd } from '../data/membership';
+
+const steps = [
+  {
+    title: 'Apply',
+    text: 'Fill in the form on this page. It takes about three minutes, it’s free, and it doesn’t commit you to anything.',
+  },
+  {
+    title: 'We read it',
+    text: 'We read every application ourselves. We’re looking for character, curiosity and generosity, not status or what you drive.',
+  },
+  {
+    title: 'We talk',
+    text: 'If it looks like a fit, we reach out to get to know you and answer your questions.',
+  },
+  {
+    title: 'You join',
+    text: `Once you’re accepted, we send a payment link for the ${usd(founders.initiation)} initiation and your first ${usd(founders.monthly)} month. Nothing is charged through this site.`,
+  },
+];
 
 const questions = [
+  { q: 'Is applying a commitment?', a: 'No. Applying is free. You only pay if you’re accepted and decide to join.' },
+  { q: 'How do I pay?', a: 'After you’re accepted, we send you a payment link for the initiation and the first month.' },
   { q: 'Do I need a car to join?', a: 'No. Cars are part of what we do, not a condition of belonging.' },
   { q: 'Is this only for business owners?', a: 'No. We’re looking for good company, whatever you do.' },
-  { q: 'What happens after twenty-five?', a: 'Founders membership closes. The founder rate stays with the people who hold it.' },
+  { q: 'Where do gatherings happen?', a: 'Around Gilbert and the East Valley. Venues and dates are shared with members first.' },
+  {
+    q: `What happens after ${founders.capWords.toLowerCase()}?`,
+    a: 'Founders membership closes. The founder rate stays with the people who hold it.',
+  },
 ];
 ---
 
 <Base
   title="Membership"
-  description="Founders membership at Desert Social: twenty-five places, $250 to join and $50 a month. See what's included and apply."
+  description="How Founders membership at Desert Social works: twenty-five places, $250 to join and $50 a month, paid only once you're accepted. What's included, the steps, and the application."
 >
   <header class="page-head">
     <div class="wrap">
       <p class="label" data-reveal>Membership</p>
       <h1 class="display" data-reveal style="--d:.06s">Founders <em>membership.</em></h1>
-      <p class="lede" data-reveal style="--d:.12s">{tiers[0].summary}</p>
+      <p class="lede" data-reveal style="--d:.12s">{founders.summary}</p>
     </div>
   </header>
 
@@ -29,55 +54,88 @@ const questions = [
           <dl class="figures" data-reveal>
             <div>
               <dt class="label">Places</dt>
-              <dd>{tier.cap}</dd>
+              <dd class="figures__num">{tier.cap}</dd>
+              <dd class="figures__note">{tier.name} only. When they’re taken, it closes.</dd>
             </div>
             <div>
               <dt class="label">To join</dt>
-              <dd>{usd(tier.initiation)}</dd>
+              <dd class="figures__num">{usd(tier.initiation)}</dd>
+              <dd class="figures__note">Once, when you’re accepted.</dd>
             </div>
             <div>
               <dt class="label">Each month</dt>
-              <dd>{usd(tier.monthly)}</dd>
+              <dd class="figures__num">{usd(tier.monthly)}</dd>
+              <dd class="figures__note">Locked for as long as you’re a member.</dd>
             </div>
           </dl>
-
-          <div class="offer__body">
-            <div data-reveal>
-              <h2 class="label offer__head">Included now</h2>
-              <ul class="included">
-                {tier.includedNow.map((item) => (
-                  <li>
-                    <h3>{item.title}</h3>
-                    <p>{item.detail}</p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div data-reveal style="--d:.06s">
-              <h2 class="label offer__head">What we’re building</h2>
-              <p class="building">{tier.beingBuilt.map((item) => item.title).join(' · ')}</p>
-              <p class="small">
-                Where we’re headed, not a schedule. Founders are offered each one first.
-              </p>
-            </div>
-          </div>
         </div>
       </section>
     ))
   }
 
+  <section class="section" id="how">
+    <div class="wrap grid">
+      <p class="label col-label" data-reveal>How it works</p>
+      <div class="col-main">
+        <h2 class="title section-title" data-reveal>Four steps, and you only pay at the last one.</h2>
+        <ol class="steps" data-reveal>
+          {
+            steps.map((s, i) => (
+              <li>
+                <span class="steps__num" aria-hidden="true">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3>{s.title}</h3>
+                  <p>{s.text}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap grid">
+      <p class="label col-label" data-reveal>What you get</p>
+      <div class="col-main">
+        <h2 class="title section-title" data-reveal>Included from day one.</h2>
+        <ul class="rows" data-reveal>
+          {
+            founders.includedNow.map((item) => (
+              <li class="row">
+                <h3 class="row__title">{item.title}</h3>
+                <p class="row__text">{item.detail}</p>
+              </li>
+            ))
+          }
+        </ul>
+
+        <h2 class="title section-title section-title--next" data-reveal>What we’re building next.</h2>
+        <ul class="rows rows--quiet" data-reveal>
+          {
+            founders.beingBuilt.map((item) => (
+              <li class="row">
+                <h3 class="row__title">{item.title}</h3>
+                <p class="row__text">{item.detail}</p>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="small note" data-reveal>
+          This is where we’re headed, not a schedule. Founders are offered each one first, as it opens.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="apply">
     <div class="wrap grid">
       <div class="col-label" data-reveal>
         <p class="label">Apply</p>
-        <ol class="steps">
-          <li>Apply here</li>
-          <li>We talk</li>
-          <li>You join</li>
-        </ol>
-        <p class="small">
-          Applying is free. If you’re accepted, we send a payment link. Nothing is charged through this site.
-        </p>
+        <p class="small aside">Free, about three minutes, and no commitment. Nothing is charged through this site.</p>
       </div>
       <div class="col-main" data-reveal>
         <h2 class="display apply__title">Tell us about you.</h2>
@@ -106,6 +164,9 @@ const questions = [
 </Base>
 
 <style>
+  .offer {
+    padding-block: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+  }
   .figures {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -120,7 +181,7 @@ const questions = [
     padding-left: 0;
     border-left: 0;
   }
-  .figures dd {
+  .figures__num {
     margin-top: 0.6rem;
     font-family: var(--serif);
     font-size: clamp(2.4rem, 1.3rem + 5vw, 6rem);
@@ -129,65 +190,103 @@ const questions = [
     letter-spacing: -0.035em;
     font-variant-numeric: lining-nums;
   }
-
-  .offer__body {
-    display: grid;
-    gap: 2.5rem clamp(2rem, 5vw, 4rem);
-    margin-top: clamp(2.5rem, 5vw, 4rem);
-  }
-  @media (min-width: 60rem) {
-    .offer__body {
-      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    }
-  }
-  .offer__head {
-    margin-bottom: 1.1rem;
-  }
-  .included {
-    display: grid;
-    gap: 1.25rem;
-  }
-  .included h3 {
-    font-family: var(--serif);
-    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.65rem);
-    font-weight: 340;
-    line-height: 1.2;
-  }
-  .included p {
-    margin-top: 0.25rem;
-    color: var(--fg-soft);
-    max-width: 30rem;
-  }
-  .building {
-    font-family: var(--serif);
-    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+  .figures__note {
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
     line-height: 1.45;
     color: var(--fg-soft);
-    margin-bottom: 0.9rem;
+    max-width: 16rem;
+  }
+  @media (max-width: 40rem) {
+    .figures {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .figures > div {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+      align-items: baseline;
+      gap: 0.25rem 1rem;
+      padding: 1.1rem 0;
+      border-left: 0;
+      border-top: 1px solid var(--rule);
+    }
+    .figures > div:first-child {
+      border-top: 0;
+    }
+    .figures dt {
+      grid-column: 1 / -1;
+    }
+    .figures__num {
+      margin-top: 0;
+      font-size: 2.75rem;
+    }
+    .figures__note {
+      margin-top: 0;
+    }
   }
 
+  .section-title {
+    margin-bottom: clamp(1.5rem, 3vw, 2.25rem);
+    font-size: clamp(1.6rem, 1.25rem + 1.4vw, 2.4rem);
+  }
+  .section-title--next {
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+  }
+
+  .steps {
+    border-top: 1px solid var(--rule-strong);
+  }
+  .steps li {
+    display: grid;
+    grid-template-columns: 2.25rem minmax(0, 1fr);
+    gap: 0 1rem;
+    padding-block: clamp(1.1rem, 2.2vw, 1.6rem);
+    border-bottom: 1px solid var(--rule);
+  }
+  .steps__num {
+    font-family: var(--serif);
+    font-size: clamp(1.4rem, 1.2rem + 0.8vw, 1.8rem);
+    line-height: 1.1;
+    color: var(--accent);
+  }
+  .steps h3 {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 1.1rem + 0.9vw, 1.75rem);
+    font-weight: 330;
+    line-height: 1.15;
+  }
+  .steps p {
+    margin-top: 0.35rem;
+    color: var(--fg-soft);
+    max-width: 36rem;
+  }
+  @media (min-width: 52rem) {
+    .steps li > div {
+      display: grid;
+      grid-template-columns: minmax(0, 4fr) minmax(0, 7fr);
+      gap: 2rem;
+      align-items: baseline;
+    }
+    .steps p {
+      margin-top: 0;
+    }
+  }
+
+  .rows--quiet .row__title {
+    color: var(--fg-soft);
+  }
+  .note {
+    margin-top: 1rem;
+    max-width: 30rem;
+  }
+
+  #how,
   #apply {
     scroll-margin-top: 4rem;
   }
-  .steps {
-    display: grid;
-    gap: 0.4rem;
-    margin-block: 1.25rem;
-    counter-reset: step;
-  }
-  .steps li {
-    counter-increment: step;
-    font-family: var(--serif);
-    font-size: 1.25rem;
-  }
-  .steps li::before {
-    content: counter(step) '.';
-    display: inline-block;
-    width: 1.5rem;
-    color: var(--accent);
-  }
-  .col-label .small {
-    max-width: 17rem;
+  .aside {
+    margin-top: 1rem;
+    max-width: 16rem;
   }
   .apply__title {
     margin-bottom: clamp(2rem, 4vw, 3rem);
