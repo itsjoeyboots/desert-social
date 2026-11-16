@@ -38,8 +38,8 @@ The publishable key in `src/data/site.ts` is meant to be public. It can only cal
 
 Every push to `main` deploys through `.github/workflows/deploy.yml`.
 
-- **Preview** (default): https://itsjoeyboots.github.io/desert-social/, hidden from search engines.
-- **Live:** set the repository variable `LIVE_DOMAIN` to `desertsocialaz.com`, point the domain's DNS at GitHub Pages (below), then re-run the workflow.
+- **Live** (default): https://desertsocialaz.com, set as the custom domain under **Settings → Pages**.
+- **Preview** instead: set the repository variable `LIVE_DOMAIN` to `preview` and remove the custom domain; the site then builds for https://itsjoeyboots.github.io/desert-social/, hidden from search engines.
 
 GitHub Pages must be set to **Settings → Pages → Source: GitHub Actions**.
 

@@ -2,12 +2,11 @@ name: Deploy to GitHub Pages
 
 # Every push to main builds and publishes the site.
 #
-# Preview vs. live is one switch: the repository variable LIVE_DOMAIN
-# (Settings → Secrets and variables → Actions → Variables).
-#   • Not set:   preview at https://itsjoeyboots.github.io/desert-social/,
-#                hidden from search engines.
-#   • Set to desertsocialaz.com: the live site at the domain's root, indexed,
-#                with a CNAME file so GitHub Pages serves the custom domain.
+# The site is live at desertsocialaz.com (set under Settings → Pages →
+# Custom domain). To build the hidden preview at
+# https://itsjoeyboots.github.io/desert-social/ instead, set the repository
+# variable LIVE_DOMAIN to "preview" (Settings → Secrets and variables →
+# Actions → Variables) and remove the custom domain.
 
 on:
   push:
@@ -38,15 +37,15 @@ jobs:
 
       - name: Build
         env:
-          LIVE_DOMAIN: ${{ vars.LIVE_DOMAIN }}
+          LIVE_DOMAIN: ${{ vars.LIVE_DOMAIN || 'desertsocialaz.com' }}
         run: |
-          if [ -n "$LIVE_DOMAIN" ]; then
+          if [ "$LIVE_DOMAIN" != "preview" ]; then
             export SITE_URL="https://$LIVE_DOMAIN" BASE_PATH="/"
           else
             export SITE_URL="https://itsjoeyboots.github.io" BASE_PATH="/desert-social" PUBLIC_NOINDEX=1
           fi
           npm run build
-          if [ -n "$LIVE_DOMAIN" ]; then echo "$LIVE_DOMAIN" > dist/CNAME; fi
+          if [ "$LIVE_DOMAIN" != "preview" ]; then echo "$LIVE_DOMAIN" > dist/CNAME; fi
           touch dist/.nojekyll
 
       - uses: actions/upload-pages-artifact@v3
