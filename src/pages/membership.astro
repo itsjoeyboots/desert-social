@@ -24,6 +24,7 @@ const steps = [
 
 const questions = [
   { q: 'Is applying a commitment?', a: 'No. Applying is free. You only pay if you’re accepted and decide to join.' },
+  { q: 'Can I cancel?', a: founders.terms.cancel },
   { q: 'How do I pay?', a: 'After you’re accepted, we send you a payment link for the initiation and the first month.' },
   { q: 'Do I need a car to join?', a: 'No. Cars are part of what we do, not a condition of belonging.' },
   { q: 'Is this only for business owners?', a: 'No. We’re looking for good company, whatever you do.' },
@@ -60,12 +61,12 @@ const questions = [
             <div>
               <dt class="label">To join</dt>
               <dd class="figures__num">{usd(tier.initiation)}</dd>
-              <dd class="figures__note">Once, when you’re accepted.</dd>
+              <dd class="figures__note">Once, when you’re accepted. {tier.terms.initiation}</dd>
             </div>
             <div>
               <dt class="label">Each month</dt>
               <dd class="figures__num">{usd(tier.monthly)}</dd>
-              <dd class="figures__note">Locked for as long as you’re a member.</dd>
+              <dd class="figures__note">Locked while you’re a member. {tier.terms.monthly}</dd>
             </div>
           </dl>
         </div>

@@ -10,6 +10,7 @@ export interface Tier {
   initiation: number;
   monthly: number;
   summary: string;
+  terms: { initiation: string; monthly: string; cancel: string };
   includedNow: { title: string; detail: string }[];
   beingBuilt: { title: string; detail: string }[];
 }
@@ -25,6 +26,11 @@ export const tiers: Tier[] = [
     monthly: 50,
     summary:
       'One membership, twenty-five places. Founders are here from the first night and have first claim on everything that follows.',
+    terms: {
+      initiation: 'Not refundable.',
+      monthly: 'Cancel anytime.',
+      cancel: 'Yes, anytime. Your monthly membership stops when you cancel. The initiation isn’t refundable.',
+    },
     includedNow: [
       {
         title: 'Entry to every gathering',

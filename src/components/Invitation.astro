@@ -21,6 +21,7 @@ const { compact = false } = Astro.props;
       <p class="invitation__terms" data-reveal>
         <span>{usd(founders.initiation)} to join</span>
         <span>{usd(founders.monthly)} a month</span>
+        <span>{founders.terms.monthly.replace('.', '')}</span>
         <span>Pay only once you’re accepted</span>
       </p>
       {
