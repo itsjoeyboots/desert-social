@@ -100,7 +100,7 @@ declare
   errors      jsonb := '{}'::jsonb;
   headers     jsonb := coalesce(nullif(current_setting('request.headers', true), '')::jsonb, '{}'::jsonb);
   ip          text;
-  ip_hash     text;
+  v_ip_hash   text;
   recent      integer;
   v_name      text := btrim(coalesce(payload->>'full_name', ''));
   v_email     text := lower(btrim(coalesce(payload->>'email', '')));
@@ -125,17 +125,17 @@ begin
 
   -- Rate limit by a one-way hash of the visitor's address.
   ip := split_part(coalesce(headers->>'cf-connecting-ip', headers->>'x-forwarded-for', headers->>'x-real-ip', 'unknown'), ',', 1);
-  ip_hash := encode(digest(btrim(ip) || ':desert-social', 'sha256'), 'hex');
+  v_ip_hash := encode(digest(btrim(ip) || ':desert-social', 'sha256'), 'hex');
 
   delete from public.form_rate_limits where created_at < now() - interval '1 day';
   select count(*) into recent
     from public.form_rate_limits
-   where form_rate_limits.ip_hash = submit_form.ip_hash
+   where form_rate_limits.ip_hash = v_ip_hash
      and created_at > now() - interval '10 minutes';
   if recent >= 5 then
     return jsonb_build_object('ok', false, 'error', 'rate_limited');
   end if;
-  insert into public.form_rate_limits (ip_hash, form_name) values (submit_form.ip_hash, submit_form.form_name);
+  insert into public.form_rate_limits (ip_hash, form_name) values (v_ip_hash, submit_form.form_name);
 
   -- Fields every form has.
   if v_name = '' then
@@ -190,7 +190,7 @@ begin
     values
       (v_name, v_email, v_phone, btrim(payload->>'profession'),
        nullif(btrim(coalesce(payload->>'instagram', '')), ''), v_interests, v_message,
-       left(submit_form.page, 200), submit_form.ip_hash);
+       left(submit_form.page, 200), v_ip_hash);
 
   elsif form_name = 'partner' then
     if btrim(coalesce(payload->>'business', '')) = '' then
@@ -227,7 +227,7 @@ begin
     values
       (v_name, btrim(payload->>'business'), v_email, nullif(v_phone, ''), payload->>'partner_type',
        nullif(btrim(coalesce(payload->>'link', '')), ''), v_message,
-       left(submit_form.page, 200), submit_form.ip_hash);
+       left(submit_form.page, 200), v_ip_hash);
 
   else -- contact
     if not (coalesce(payload->>'topic', '') = any (allowed_topics)) then
@@ -246,7 +246,7 @@ begin
     end if;
 
     insert into public.contact_messages (full_name, email, topic, message, page, ip_hash)
-    values (v_name, v_email, payload->>'topic', v_message, left(submit_form.page, 200), submit_form.ip_hash);
+    values (v_name, v_email, payload->>'topic', v_message, left(submit_form.page, 200), v_ip_hash);
   end if;
 
   return jsonb_build_object('ok', true);
