@@ -6,44 +6,33 @@ const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="wrap">
-    <div class="site-footer__mark">
-      <Wordmark size="lg" />
-    </div>
-
-    <div class="site-footer__cols">
-      <div>
-        <p class="label">Explore</p>
-        <ul>
+  <div class="wrap site-footer__inner">
+    <div class="site-footer__top">
+      <a class="site-footer__brand" href={href('/')}><Wordmark /></a>
+      <nav aria-label="Footer">
+        <ul class="site-footer__links">
           {nav.map((item) => <li><a href={href(item.path)}>{item.label}</a></li>)}
         </ul>
-      </div>
-      <div>
-        <p class="label">Get in touch</p>
-        <ul>
-          <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
-          {
-            site.social.map((s) => (
-              <li>
-                <a href={s.url} target="_blank" rel="noopener noreferrer">
-                  {s.label} <span class="visually-hidden">(opens in a new tab)</span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </div>
-      <div>
-        <p class="label">Where</p>
-        <ul>
-          <li>{site.location}</li>
-        </ul>
-      </div>
+      </nav>
     </div>
-
     <div class="site-footer__base">
-      <p>© {year} {site.name}</p>
-      <a href={href('/privacy/')}>Privacy</a>
+      <ul class="site-footer__contact">
+        <li><a href={`mailto:${site.email}`}>{site.email}</a></li>
+        {
+          site.social.map((s) => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer">
+                {s.label}
+                <span class="visually-hidden">(opens in a new tab)</span>
+              </a>
+            </li>
+          ))
+        }
+        <li>{site.location}</li>
+      </ul>
+      <p>
+        © {year} {site.name} · <a href={href('/privacy/')}>Privacy</a>
+      </p>
     </div>
   </div>
 </footer>
@@ -53,56 +42,58 @@ const year = new Date().getFullYear();
     background: var(--ink);
     color: var(--bone);
     border-top: 1px solid rgba(239, 234, 225, 0.14);
-    padding-block: clamp(4rem, 3rem + 5vw, 7rem) 2rem;
+    padding-block: clamp(2.5rem, 2rem + 2vw, 3.5rem) 2rem;
   }
-  .site-footer__mark {
-    padding-bottom: clamp(3rem, 6vw, 5rem);
-    overflow: hidden;
-  }
-  .site-footer__cols {
+  .site-footer__inner {
     display: grid;
-    gap: 2.5rem;
-    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
-    padding-block: 2.5rem;
-    border-top: 1px solid rgba(239, 234, 225, 0.14);
+    gap: 2rem;
   }
-  .site-footer__cols .label {
-    margin-bottom: 1.1rem;
-    color: var(--stone);
-  }
-  .site-footer__cols li {
-    color: var(--sand);
-  }
-  .site-footer__cols a {
-    display: inline-block;
-    padding-block: 0.3rem;
-    color: var(--sand);
-    text-decoration: none;
-    transition: color 0.2s var(--ease);
-  }
-  .site-footer__cols a:hover {
-    color: var(--bone);
-  }
+  .site-footer__top,
   .site-footer__base {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding-top: 1.75rem;
+    gap: 1rem 2.5rem;
+  }
+  .site-footer__base {
+    padding-top: 1.5rem;
     border-top: 1px solid rgba(239, 234, 225, 0.14);
     font-size: var(--t-small);
     color: var(--stone);
   }
-  .site-footer__base {
-    align-items: center;
+  .site-footer__brand {
+    text-decoration: none;
+    padding-block: 0.75rem;
   }
-  .site-footer__base a {
+  .site-footer__links,
+  .site-footer__contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1.75rem;
+  }
+  .site-footer a {
     display: inline-block;
     padding-block: 0.75rem;
-    margin-block: -0.75rem;
-    color: inherit;
+    color: var(--sand);
     text-decoration: none;
+    transition: color 0.2s var(--ease);
   }
-  .site-footer__base a:hover {
+  .site-footer__links a {
+    font-size: 0.7rem;
+    font-weight: 500;
+    font-stretch: 112%;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .site-footer__contact li {
+    display: flex;
+    align-items: center;
+  }
+  .site-footer__base p a {
+    color: inherit;
+  }
+  .site-footer a:hover {
     color: var(--bone);
   }
 </style>

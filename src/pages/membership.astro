@@ -3,35 +3,20 @@ import Base from '../layouts/Base.astro';
 import ApplyForm from '../components/ApplyForm.astro';
 import { tiers, usd } from '../data/membership';
 
-const steps = [
-  { title: 'Apply', text: 'Tell us who you are and why you’re interested. It takes about three minutes.' },
-  { title: 'We talk', text: 'We read every application ourselves and reach out to the people who look like a fit.' },
-  {
-    title: 'Join',
-    text: 'If we both want to go ahead, you’ll receive a payment link for the initiation fee and your first month. Nothing is charged through this site.',
-  },
-];
-
 const questions = [
   { q: 'Do I need a car to join?', a: 'No. Cars are part of what we do, not a condition of belonging.' },
-  {
-    q: 'Is this only for business owners?',
-    a: 'No. We’re looking for people who are good company and serious about what they do, whatever that is.',
-  },
-  {
-    q: 'What happens after twenty-five?',
-    a: 'Founders membership closes. The founder rate stays with the people who hold it.',
-  },
+  { q: 'Is this only for business owners?', a: 'No. We’re looking for good company, whatever you do.' },
+  { q: 'What happens after twenty-five?', a: 'Founders membership closes. The founder rate stays with the people who hold it.' },
 ];
 ---
 
 <Base
   title="Membership"
-  description="Founders membership at Desert Social: twenty-five places, $250 to join and $50 a month. See what's included now, what we're building, and apply."
+  description="Founders membership at Desert Social: twenty-five places, $250 to join and $50 a month. See what's included and apply."
 >
   <header class="page-head">
     <div class="wrap">
-      <p class="label" data-reveal><span class="num">Membership</span>One way in</p>
+      <p class="label" data-reveal>Membership</p>
       <h1 class="display" data-reveal style="--d:.06s">Founders <em>membership.</em></h1>
       <p class="lede" data-reveal style="--d:.12s">{tiers[0].summary}</p>
     </div>
@@ -45,52 +30,34 @@ const questions = [
             <div>
               <dt class="label">Places</dt>
               <dd>{tier.cap}</dd>
-              <dd class="figures__note">{tier.name} only. When they’re taken, it closes.</dd>
             </div>
             <div>
-              <dt class="label">Initiation</dt>
+              <dt class="label">To join</dt>
               <dd>{usd(tier.initiation)}</dd>
-              <dd class="figures__note">Once, when you join.</dd>
             </div>
             <div>
-              <dt class="label">Membership</dt>
-              <dd>
-                {usd(tier.monthly)}
-                <span>/ month</span>
-              </dd>
-              <dd class="figures__note">Locked at this rate while you’re a member.</dd>
+              <dt class="label">Each month</dt>
+              <dd>{usd(tier.monthly)}</dd>
             </div>
           </dl>
 
-          <div class="offer__lists">
+          <div class="offer__body">
             <div data-reveal>
-              <h2 class="label offer__head">
-                <span class="num">01</span>Included now
-              </h2>
-              <ul class="rows">
+              <h2 class="label offer__head">Included now</h2>
+              <ul class="included">
                 {tier.includedNow.map((item) => (
-                  <li class="benefit">
-                    <h3 class="row__title">{item.title}</h3>
+                  <li>
+                    <h3>{item.title}</h3>
                     <p>{item.detail}</p>
                   </li>
                 ))}
               </ul>
             </div>
-            <div data-reveal style="--d:.08s">
-              <h2 class="label offer__head">
-                <span class="num">02</span>What we’re building
-              </h2>
-              <ul class="rows">
-                {tier.beingBuilt.map((item) => (
-                  <li class="benefit benefit--next">
-                    <h3 class="row__title">{item.title}</h3>
-                    <p>{item.detail}</p>
-                  </li>
-                ))}
-              </ul>
-              <p class="small offer__note">
-                This is where we’re headed, not a schedule. We’re not putting dates on any of it yet.
-                Founders are offered each one first as it opens.
+            <div data-reveal style="--d:.06s">
+              <h2 class="label offer__head">What we’re building</h2>
+              <p class="building">{tier.beingBuilt.map((item) => item.title).join(' · ')}</p>
+              <p class="small">
+                Where we’re headed, not a schedule. Founders are offered each one first.
               </p>
             </div>
           </div>
@@ -99,32 +66,17 @@ const questions = [
     ))
   }
 
-  <section class="section section--flush">
-    <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">03</span>How it works</p>
-      <div class="col-main">
-        <ol class="steps">
-          {
-            steps.map((s, i) => (
-              <li data-reveal style={`--d:${i * 0.08}s`}>
-                <p class="steps__num">{String(i + 1).padStart(2, '0')}</p>
-                <h3 class="title">{s.title}</h3>
-                <p>{s.text}</p>
-              </li>
-            ))
-          }
-        </ol>
-      </div>
-    </div>
-  </section>
-
   <section class="section" id="apply">
     <div class="wrap grid">
       <div class="col-label" data-reveal>
-        <p class="label"><span class="num">04</span>Apply</p>
-        <p class="small apply__aside">
-          Applying is free and commits you to nothing. We’re looking for people who’ll add something to
-          the room.
+        <p class="label">Apply</p>
+        <ol class="steps">
+          <li>Apply here</li>
+          <li>We talk</li>
+          <li>You join</li>
+        </ol>
+        <p class="small">
+          Applying is free. If you’re accepted, we send a payment link. Nothing is charged through this site.
         </p>
       </div>
       <div class="col-main" data-reveal>
@@ -136,15 +88,12 @@ const questions = [
 
   <section class="section">
     <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">05</span>Good questions</p>
+      <p class="label col-label" data-reveal>Questions</p>
       <div class="col-main">
-        <dl class="rows faq" data-reveal>
+        <dl class="rows" data-reveal>
           {
             questions.map((item) => (
               <div class="row">
-                <span class="row__num" aria-hidden="true">
-                  Q
-                </span>
                 <dt class="row__title">{item.q}</dt>
                 <dd class="row__text">{item.a}</dd>
               </div>
@@ -159,121 +108,88 @@ const questions = [
 <style>
   .figures {
     display: grid;
-    gap: 0;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     border-top: 1px solid var(--rule-strong);
-  }
-  .figures > div {
-    padding-block: clamp(1.5rem, 3vw, 2.25rem);
     border-bottom: 1px solid var(--rule);
   }
-  .figures dd:not(.figures__note) {
-    margin-top: 0.75rem;
+  .figures > div {
+    padding: clamp(1.25rem, 3vw, 2rem) clamp(0.75rem, 2.5vw, 2rem);
+    border-left: 1px solid var(--rule);
+  }
+  .figures > div:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .figures dd {
+    margin-top: 0.6rem;
     font-family: var(--serif);
-    font-size: clamp(3.5rem, 2rem + 6vw, 7rem);
+    font-size: clamp(2.4rem, 1.3rem + 5vw, 6rem);
     font-weight: 280;
     line-height: 0.95;
     letter-spacing: -0.035em;
     font-variant-numeric: lining-nums;
   }
-  .figures dd span {
-    font-family: var(--sans);
-    font-size: 0.95rem;
-    letter-spacing: 0.02em;
-    color: var(--fg-faint);
-    white-space: nowrap;
-  }
-  .figures__note {
-    margin-top: 0.9rem;
-    color: var(--fg-soft);
-    font-size: 0.98rem;
-    max-width: 18rem;
-  }
-  @media (min-width: 52rem) {
-    .figures {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      border-bottom: 1px solid var(--rule);
-    }
-    .figures > div {
-      border-bottom: 0;
-      padding-inline: clamp(1.25rem, 3vw, 2.5rem);
-      border-left: 1px solid var(--rule);
-    }
-    .figures > div:first-child {
-      padding-left: 0;
-      border-left: 0;
-    }
-  }
 
-  .offer__lists {
+  .offer__body {
     display: grid;
-    gap: clamp(3rem, 6vw, 5rem);
-    margin-top: clamp(3.5rem, 7vw, 6rem);
+    gap: 2.5rem clamp(2rem, 5vw, 4rem);
+    margin-top: clamp(2.5rem, 5vw, 4rem);
   }
   @media (min-width: 60rem) {
-    .offer__lists {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    .offer__body {
+      grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
     }
   }
   .offer__head {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.1rem;
   }
-  .benefit {
-    padding-block: 1.35rem;
-    border-bottom: 1px solid var(--rule);
-  }
-  .benefit .row__title {
-    font-size: clamp(1.35rem, 1.1rem + 0.9vw, 1.75rem);
-  }
-  .benefit p {
-    margin-top: 0.4rem;
-    color: var(--fg-soft);
-    max-width: 30rem;
-  }
-  .benefit--next .row__title {
-    color: var(--fg-soft);
-  }
-  .offer__note {
-    margin-top: 1.25rem;
-    max-width: 30rem;
-  }
-
-  .steps {
+  .included {
     display: grid;
-    gap: clamp(2rem, 4vw, 3rem);
+    gap: 1.25rem;
   }
-  @media (min-width: 52rem) {
-    .steps {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  .included h3 {
+    font-family: var(--serif);
+    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.65rem);
+    font-weight: 340;
+    line-height: 1.2;
   }
-  .steps li {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--rule-strong);
-  }
-  .steps__num {
-    font-size: var(--t-label);
-    font-stretch: 112%;
-    letter-spacing: 0.14em;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-  }
-  .steps li > p:last-child {
-    margin-top: 0.9rem;
+  .included p {
+    margin-top: 0.25rem;
     color: var(--fg-soft);
-    max-width: 24rem;
+    max-width: 30rem;
+  }
+  .building {
+    font-family: var(--serif);
+    font-size: clamp(1.2rem, 1.05rem + 0.6vw, 1.45rem);
+    line-height: 1.45;
+    color: var(--fg-soft);
+    margin-bottom: 0.9rem;
   }
 
   #apply {
     scroll-margin-top: 4rem;
   }
-  .apply__aside {
-    margin-top: 1.25rem;
-    max-width: 16rem;
+  .steps {
+    display: grid;
+    gap: 0.4rem;
+    margin-block: 1.25rem;
+    counter-reset: step;
+  }
+  .steps li {
+    counter-increment: step;
+    font-family: var(--serif);
+    font-size: 1.25rem;
+  }
+  .steps li::before {
+    content: counter(step) '.';
+    display: inline-block;
+    width: 1.5rem;
+    color: var(--accent);
+  }
+  .col-label .small {
+    max-width: 17rem;
   }
   .apply__title {
-    margin-bottom: clamp(2.5rem, 5vw, 4rem);
-  }
-  .faq .row__title {
-    font-size: clamp(1.3rem, 1.1rem + 0.8vw, 1.7rem);
+    margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 </style>

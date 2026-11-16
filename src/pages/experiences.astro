@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Upcoming from '../components/Upcoming.astro';
 import Invitation from '../components/Invitation.astro';
+import { upcoming } from '../data/events';
 
 const entries = (await getCollection('experiences')).sort((a, b) => a.data.order - b.data.order);
 const experiences = await Promise.all(
@@ -16,11 +17,10 @@ const experiences = await Promise.all(
 >
   <header class="page-head">
     <div class="wrap">
-      <p class="label" data-reveal><span class="num">Experiences</span>What we do</p>
+      <p class="label" data-reveal>Experiences</p>
       <h1 class="display" data-reveal style="--d:.06s">Reasons to be <em>in the same place.</em></h1>
       <p class="lede" data-reveal style="--d:.12s">
-        Each gathering is a different excuse for the same thing: time with people worth knowing. These are
-        the formats we’re building. Dates are announced to Founders first.
+        Five ways we spend time together. Dates go to Founders first.
       </p>
     </div>
   </header>
@@ -28,18 +28,14 @@ const experiences = await Promise.all(
   <section class="section section--list">
     <div class="wrap">
       {
-        experiences.map(({ entry, Content }, i) => (
-          <article class="exp grid" id={entry.id} data-reveal>
-            <div class="exp__meta">
-              <p class="exp__num">{String(i + 1).padStart(2, '0')}</p>
+        experiences.map(({ entry, Content }) => (
+          <article class="exp" id={entry.id} data-reveal>
+            <div class="exp__head">
+              <h2 class="title">{entry.data.title}</h2>
               <p class="label">{entry.data.kind}</p>
             </div>
             <div class="exp__body">
-              <h2 class="display">{entry.data.title}</h2>
-              <p class="lede">{entry.data.summary}</p>
-              <div class="prose">
-                <Content />
-              </div>
+              <Content />
             </div>
           </article>
         ))
@@ -47,14 +43,20 @@ const experiences = await Promise.all(
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">→</span>Upcoming</p>
-      <div class="col-main" data-reveal>
-        <Upcoming />
-      </div>
-    </div>
-  </section>
+  {
+    upcoming().length > 0 && (
+      <section class="section">
+        <div class="wrap grid">
+          <p class="label col-label" data-reveal>
+            Upcoming
+          </p>
+          <div class="col-main" data-reveal>
+            <Upcoming />
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <Invitation />
 </Base>
@@ -64,38 +66,25 @@ const experiences = await Promise.all(
     padding-top: 0;
   }
   .exp {
-    padding-block: clamp(3rem, 6vw, 5.5rem);
+    display: grid;
+    gap: 0.75rem 2rem;
+    padding-block: clamp(1.75rem, 3.5vw, 2.75rem);
     border-top: 1px solid var(--rule);
     scroll-margin-top: 5rem;
   }
   .exp:first-child {
     border-top-color: var(--rule-strong);
   }
-  .exp__meta,
+  .exp__head .label {
+    margin-top: 0.6rem;
+  }
   .exp__body {
-    grid-column: 1 / -1;
+    color: var(--fg-soft);
+    max-width: var(--measure);
   }
-  .exp__num {
-    font-family: var(--serif);
-    font-size: clamp(2.5rem, 2rem + 2vw, 4rem);
-    font-weight: 300;
-    line-height: 1;
-    color: var(--accent);
-    margin-bottom: 0.9rem;
-    font-variant-numeric: lining-nums;
-  }
-  .exp__body .lede {
-    margin-top: 1.25rem;
-  }
-  .exp__body .prose {
-    margin-top: 1.5rem;
-  }
-  @media (min-width: 60rem) {
-    .exp__meta {
-      grid-column: 1 / span 3;
-    }
-    .exp__body {
-      grid-column: 4 / -1;
+  @media (min-width: 52rem) {
+    .exp {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
     }
   }
 </style>

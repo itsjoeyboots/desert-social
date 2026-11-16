@@ -5,167 +5,89 @@ import Ridges from '../components/Ridges.astro';
 import Upcoming from '../components/Upcoming.astro';
 import Invitation from '../components/Invitation.astro';
 import { site, href } from '../data/site';
+import { upcoming } from '../data/events';
 
 const experiences = (await getCollection('experiences')).sort((a, b) => a.data.order - b.data.order);
-
-const people = [
-  { title: 'Founders and owners', text: 'People running something of their own, at any size.' },
-  { title: 'Professionals and executives', text: 'Good at what they do and curious about what you do.' },
-  { title: 'Drivers and collectors', text: 'From a first project car to a full garage.' },
-  { title: 'Investors and builders', text: 'Putting money and time into what comes next.' },
-  { title: 'Photographers and creatives', text: 'The ones who make things look and feel the way they should.' },
-];
-
-const principles = [
-  {
-    title: 'Curated, not closed.',
-    text: 'We choose who’s in the room so the room is worth being in. That’s about character, never status.',
-  },
-  {
-    title: 'People first.',
-    text: 'The venue, the cars and the menu are all there for one reason: to give good people something to talk about.',
-  },
-  {
-    title: 'Built slowly.',
-    text: 'We’d rather host one night people remember than ten they forget.',
-  },
-];
+const hasDates = upcoming().length > 0;
 ---
 
 <Base>
   <section class="hero">
     <Ridges />
     <div class="wrap hero__inner">
-      <p class="label hero__eyebrow" data-reveal>{site.location}</p>
+      <p class="label" data-reveal>{site.location}</p>
       <h1 class="hero-title" data-reveal style="--d:.08s">
         Good company is built <em>in person.</em>
       </h1>
-      <div class="hero__foot">
-        <p class="lede" data-reveal style="--d:.16s">
-          Desert Social is a community for people who build things — companies, cars, careers, ideas — and
-          would rather meet across a table than through a screen.
-        </p>
-        <div class="btn-row" data-reveal style="--d:.22s">
-          <a class="btn" href={href('/membership/#apply')}>Apply for Founders</a>
-          <a class="btn btn--ghost" href="#what">What it is</a>
-        </div>
+      <p class="lede" data-reveal style="--d:.16s">
+        A community for people who build things and would rather meet across a table than through a screen.
+      </p>
+      <div class="hero__actions" data-reveal style="--d:.22s">
+        <a class="btn" href={href('/membership/#apply')}>Apply for Founders</a>
+        <a class="arrow-link" href="#what">What it is</a>
       </div>
     </div>
   </section>
 
   <section class="section" id="what">
     <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">01</span>What it is</p>
-      <div class="col-main">
+      <p class="label col-label" data-reveal>What it is</p>
+      <div class="col-main stack" style="--stack:1.75rem">
         <h2 class="display" data-reveal>A social network that exists in the real world.</h2>
-        <div class="what__body">
-          <div class="prose" data-reveal>
-            <p>
-              Everyone knows more people than they used to and sees fewer of them. Desert Social is built to
-              fix the second part.
-            </p>
-            <p>
-              We put good people in the same place — a long dinner, an early drive, a room where the
-              conversation is worth staying for — and let the rest happen on its own. Friendships,
-              introductions and the occasional deal tend to follow.
-            </p>
-            <p><a class="arrow-link" href={href('/about/')}>Why we started</a></p>
+        <p class="lede" data-reveal>
+          We bring good people together over long dinners, early drives and conversations worth staying for.
+          Friendships, introductions and the occasional deal follow on their own.
+        </p>
+        <dl class="facts" data-reveal>
+          <div>
+            <dt class="label">Who it’s for</dt>
+            <dd>Founders and owners, professionals, drivers and collectors, investors, creatives.</dd>
           </div>
-          <ul class="nots" data-reveal style="--d:.1s">
-            <li>
-              <p class="nots__head">Not a car club.</p>
-              <p>Cars are part of the culture here. They’re not the price of entry.</p>
-            </li>
-            <li>
-              <p class="nots__head">Not a networking group.</p>
-              <p>Nobody is working the room. Business happens anyway.</p>
-            </li>
-            <li>
-              <p class="nots__head">Not a country club.</p>
-              <p>We care who you are, not what you’re worth.</p>
-            </li>
-          </ul>
-        </div>
+          <div>
+            <dt class="label">What it isn’t</dt>
+            <dd>Not a car club. Not a networking group. Not a country club.</dd>
+          </div>
+        </dl>
+        <p data-reveal><a class="arrow-link" href={href('/about/')}>Why we started</a></p>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">02</span>Who you’ll meet</p>
+      <p class="label col-label" data-reveal>Experiences</p>
       <div class="col-main">
-        <h2 class="display" data-reveal>The people in the room.</h2>
-        <ol class="rows people" data-reveal>
+        <ul class="rows" data-reveal>
           {
-            people.map((p, i) => (
-              <li class="row">
-                <span class="row__num">{String(i + 1).padStart(2, '0')}</span>
-                <h3 class="row__title">{p.title}</h3>
-                <p class="row__text">{p.text}</p>
-              </li>
-            ))
-          }
-        </ol>
-        <p class="lede people__close" data-reveal>
-          Different work, same instinct: show up, be interesting, be interested.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section tone-bone">
-    <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">03</span>Experiences</p>
-      <div class="col-main">
-        <h2 class="display" data-reveal>Five ways to spend time together.</h2>
-        <ol class="rows experiences" data-reveal>
-          {
-            experiences.map((e, i) => (
+            experiences.map((e) => (
               <li>
-                <a class="row" href={href(`/experiences/#${e.id}`)}>
-                  <span class="row__num">{String(i + 1).padStart(2, '0')}</span>
+                <a class="row row--link" href={href(`/experiences/#${e.id}`)}>
                   <span class="row__title">{e.data.title}</span>
-                  <span class="row__text">
-                    <span class="experiences__kind">{e.data.kind}</span>
-                    {e.data.summary}
-                  </span>
+                  <span class="row__text">{e.data.summary}</span>
                 </a>
               </li>
             ))
           }
-        </ol>
-        <p data-reveal><a class="arrow-link" href={href('/experiences/')}>All experiences</a></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section--flush">
-    <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">04</span>How we do it</p>
-      <div class="col-main">
-        <h2 class="display" data-reveal>Small on purpose.</h2>
-        <ul class="principles">
-          {
-            principles.map((p, i) => (
-              <li data-reveal style={`--d:${i * 0.08}s`}>
-                <h3 class="title">{p.title}</h3>
-                <p>{p.text}</p>
-              </li>
-            ))
-          }
         </ul>
+        <p class="more" data-reveal><a class="arrow-link" href={href('/experiences/')}>All experiences</a></p>
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="wrap grid">
-      <p class="label col-label" data-reveal><span class="num">05</span>Upcoming</p>
-      <div class="col-main" data-reveal>
-        <Upcoming />
-      </div>
-    </div>
-  </section>
+  {
+    hasDates && (
+      <section class="section">
+        <div class="wrap grid">
+          <p class="label col-label" data-reveal>
+            Upcoming
+          </p>
+          <div class="col-main" data-reveal>
+            <Upcoming />
+          </div>
+        </div>
+      </section>
+    )
+  }
 
   <Invitation />
 </Base>
@@ -173,7 +95,7 @@ const principles = [
 <style>
   .hero {
     position: relative;
-    min-height: 100svh;
+    min-height: min(88svh, 52rem);
     display: flex;
     align-items: flex-end;
     overflow: hidden;
@@ -192,98 +114,41 @@ const principles = [
     position: relative;
     z-index: 1;
     padding-top: 8rem;
-    padding-bottom: clamp(2.5rem, 2rem + 4vw, 5.5rem);
-  }
-  .hero__eyebrow {
-    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+    padding-bottom: clamp(3rem, 2rem + 4vw, 5.5rem);
+    display: grid;
+    gap: clamp(1.5rem, 3vw, 2.25rem);
+    justify-items: start;
   }
   .hero-title {
     max-width: 12ch;
   }
-  .hero__foot {
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin-top: 0.5rem;
+  }
+
+  .facts {
     display: grid;
-    gap: 2rem;
-    margin-top: clamp(2.25rem, 5vw, 4.5rem);
-    padding-top: clamp(1.5rem, 3vw, 2.25rem);
+    gap: 1.25rem 3rem;
+    padding-top: 1.75rem;
     border-top: 1px solid var(--rule);
-    align-items: end;
-  }
-  @media (min-width: 60rem) {
-    .hero__foot {
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 4rem;
-    }
-  }
-
-  .what__body {
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 4rem);
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
-  }
-  @media (min-width: 64rem) {
-    .what__body {
-      grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    }
-  }
-  .what__body .arrow-link {
-    margin-top: 0.75rem;
-  }
-  .nots {
-    border-top: 1px solid var(--rule-strong);
-  }
-  .nots li {
-    padding-block: 1.35rem;
-    border-bottom: 1px solid var(--rule);
-    color: var(--fg-soft);
-  }
-  .nots__head {
-    font-family: var(--serif);
-    font-size: 1.5rem;
-    font-weight: 320;
-    line-height: 1.2;
-    color: var(--fg);
-    margin-bottom: 0.3rem;
-  }
-
-  .people,
-  .experiences {
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
-  }
-  .people__close {
-    margin-top: clamp(2rem, 4vw, 3.5rem);
-    font-style: italic;
-    color: var(--fg-soft);
-  }
-  .experiences {
-    margin-bottom: 2.5rem;
-  }
-  .experiences__kind {
-    display: block;
-    margin-bottom: 0.35rem;
-    font-size: var(--t-label);
-    font-stretch: 112%;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: var(--fg-faint);
-  }
-
-  .principles {
-    display: grid;
-    gap: clamp(2rem, 4vw, 3rem);
-    margin-top: clamp(2.5rem, 5vw, 4.5rem);
   }
   @media (min-width: 52rem) {
-    .principles {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+    .facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
-  .principles li {
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--rule-strong);
+  .facts .label {
+    margin-bottom: 0.5rem;
   }
-  .principles p {
-    margin-top: 0.9rem;
+  .facts dd {
     color: var(--fg-soft);
-    max-width: 26rem;
+    max-width: 28rem;
+  }
+  .more {
+    margin-top: 2rem;
   }
 </style>

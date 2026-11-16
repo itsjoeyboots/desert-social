@@ -12,11 +12,11 @@ const fmt = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short',
     <ol class="rows">
       {list.map((e) => (
         <li class="row">
-          <span class="row__num">
-            <time datetime={e.date}>{fmt.format(new Date(`${e.date}T12:00:00Z`))}</time>
-          </span>
           <h3 class="row__title">{e.title}</h3>
-          <p class="row__text">{[e.kind, e.time, e.place, e.note].filter(Boolean).join(' · ')}</p>
+          <p class="row__text">
+            <time datetime={e.date}>{fmt.format(new Date(`${e.date}T12:00:00Z`))}</time>
+            {[e.kind, e.time, e.place, e.note].filter(Boolean).map((part) => ` · ${part}`)}
+          </p>
         </li>
       ))}
     </ol>
@@ -41,7 +41,8 @@ const fmt = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short',
   .upcoming-empty .prose {
     margin-block: 1rem 1.75rem;
   }
-  .row__num time {
+  .row__text time {
     white-space: nowrap;
+    color: var(--fg);
   }
 </style>

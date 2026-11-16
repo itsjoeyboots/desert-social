@@ -1,33 +1,94 @@
 ---
-// The closing invitation used at the foot of most pages.
+// The Founders offer in brief, closing most pages. Numbers come from
+// src/data/membership.ts.
 import { founders, usd } from '../data/membership';
 import { href } from '../data/site';
+
+interface Props {
+  // The membership page already shows the full offer, so it skips the list.
+  compact?: boolean;
+}
+const { compact = false } = Astro.props;
 ---
 
 <section class="section tone-bone invitation">
   <div class="wrap grid">
-    <p class="label col-label" data-reveal><span class="num">→</span>An invitation</p>
+    <p class="label col-label" data-reveal>{founders.name} membership</p>
     <div class="col-main">
       <h2 class="display" data-reveal>
-        {founders.capWords} Founders.<br /><em>Then the door closes.</em>
+        {founders.capWords} places. <em>Then it closes.</em>
       </h2>
-      <p class="lede" data-reveal style="--d:.08s">
-        The {founders.name} membership is the only way in right now. {usd(founders.initiation)} to join,
-        {usd(founders.monthly)} a month, and a place at everything we do from the first night on.
+      <p class="invitation__terms" data-reveal>
+        <span>{usd(founders.initiation)} to join</span>
+        <span>{usd(founders.monthly)} a month</span>
+        <span>Pay only once you’re accepted</span>
       </p>
-      <div class="btn-row" data-reveal style="--d:.14s">
+      {
+        !compact && (
+          <ul class="invitation__list" data-reveal>
+            {founders.includedNow.map((item) => (
+              <li>{item.title}</li>
+            ))}
+          </ul>
+        )
+      }
+      <div class="btn-row" data-reveal>
         <a class="btn" href={href('/membership/#apply')}>Apply for Founders</a>
-        <a class="btn btn--ghost" href={href('/membership/')}>How membership works</a>
+        {!compact && <a class="arrow-link" href={href('/membership/')}>How membership works</a>}
       </div>
     </div>
   </div>
 </section>
 
 <style>
-  .invitation .lede {
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+  .invitation__terms {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 0;
+    margin-top: clamp(1.5rem, 3vw, 2.25rem);
+    font-size: 1.05rem;
+    color: var(--fg-soft);
+  }
+  @media (max-width: 40rem) {
+    .invitation__terms {
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+  }
+  @media (min-width: 40.01rem) {
+    .invitation__terms span + span::before {
+      content: '·';
+      margin-inline: 0.75rem;
+      color: var(--accent);
+    }
+  }
+  .invitation__list {
+    display: grid;
+    gap: 0.6rem;
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    max-width: 34rem;
+  }
+  .invitation__list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    line-height: 1.35;
+  }
+  .invitation__list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.72em;
+    width: 0.75rem;
+    height: 1px;
+    background: var(--accent);
   }
   .invitation .btn-row {
-    margin-top: clamp(2rem, 4vw, 3rem);
+    align-items: center;
+    gap: 1.25rem 2rem;
+    margin-top: clamp(2rem, 4vw, 2.75rem);
   }
 </style>
