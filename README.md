@@ -34,6 +34,8 @@ All three forms (membership, partners, contact) post to one database function, `
 
 The publishable key in `src/data/site.ts` is meant to be public. It can only call `submit_form` and can't read anything back. Never put the **secret** key in this repository.
 
+**Email alerts:** each new submission emails info@desertsocialaz.com through [Resend](https://resend.com). Setup is in `supabase/alerts.sql`: store the Resend API key in Supabase Vault as `resend_api_key`, then run the file. If the key is missing or Resend is down, submissions are still saved; only the email is skipped. Alerts come from `onboarding@resend.dev` until desertsocialaz.com is verified in Resend (that needs DNS records added at GoDaddy).
+
 ## Deploying
 
 Every push to `main` deploys through `.github/workflows/deploy.yml`.
